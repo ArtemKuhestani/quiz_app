@@ -45,3 +45,17 @@ def get_all_questions():
     questions = cursor.fetchall()
     conn.close()
     return questions
+
+def delete_question_by_id(question_id):
+    """Удаляет вопрос по его ID."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DELETE FROM questions WHERE id = ?", (question_id,))
+        conn.commit()
+        return True # Возвращаем True в случае успеха
+    except sqlite3.Error as e:
+        print(f"Ошибка при удалении вопроса из БД (ID: {question_id}): {e}")
+        return False # Возвращаем False в случае ошибки
+    finally:
+        conn.close()
